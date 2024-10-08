@@ -1,0 +1,31 @@
+[
+    {
+        "id": "1",
+        "date": "2024-10-08",
+        "userId": "1",
+        "exercises": [
+            {
+                "name": "Supino",
+                "sets": 3,
+                "reps": 10
+            },
+            {
+                "name": "Agachamento",
+                "sets": 4,
+                "reps": 12
+            }
+        ]
+    },
+    {
+        "id": "2",
+        "date": "2024-10-02",
+        "userId": "2",
+        "exercises": [
+            {
+                "name": "Bíceps",
+                "sets": 4,
+                "reps": 8
+            }
+        ]
+    }
+]
