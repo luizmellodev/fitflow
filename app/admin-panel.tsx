@@ -190,7 +190,7 @@ export default function AdminPanel() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <Card>
+              <Card className="w-full">
                 <CardHeader>
                   <CardTitle>
                     Lista de Treinos
