@@ -62,11 +62,11 @@ export default function LoginPage() {
                   <Label htmlFor="name" className="text-right">
                     E-mail
                   </Label>
-                  <Input id="email" className="col-span-3" />
+                  <Input id="email" placeholder="Insira aqui seu e-mail" className="col-span-3" />
                 </div>
               </div>
               <DialogFooter>
-              <Button type="submit">Save changes</Button>
+              <Button type="submit">Enviar</Button>
               </DialogFooter>
             </DialogContent>
           </Dialog>
