@@ -1,5 +1,15 @@
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +30,7 @@ export default function LoginPage() {
         <CardContent>
           <form className="space-y-4">
             <div>
-              <Label htmlFor="username">Usuário</Label>
+              <Label htmlFor="email">Usuário</Label>
               <Input
                 id="email"
                 name="email"
@@ -41,6 +51,26 @@ export default function LoginPage() {
               Entrar
             </Button>
           </form>
+          <Dialog>
+            <DialogTrigger>Esqueci minha senha</DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Informe seu email:</DialogTitle>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="name" className="text-right">
+                    E-mail
+                  </Label>
+                  <Input id="email" value="example@example.com" className="col-span-3" />
+                </div>
+              </div>
+              <DialogFooter>
+              <Button type="submit">Save changes</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
         </CardContent>
       </Card>
     </div>
