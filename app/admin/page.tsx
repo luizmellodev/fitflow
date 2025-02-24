@@ -1,5 +1,10 @@
-import AdminPanel from "../admin-panel";
+import { GymSchedule } from "@/components/project/gym-schedule";
+import { Layout } from "@/components/project/layout";
 
-export default function AdminPage() {
-  return <AdminPanel />;
+export default function Home() {
+  return (
+    <Layout>
+      <GymSchedule />
+    </Layout>
+  );
 }

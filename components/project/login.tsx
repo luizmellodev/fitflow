@@ -15,14 +15,10 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     // Simular uma chamada de API para autenticação
-    if (username === "admin" && password === "admin123") {
+    if (username === "admin" && password === "admin") {
       // Admin login
       localStorage.setItem("user", JSON.stringify({ username, role: "admin" }));
       router.push("/admin");
-    } else if (username === "user" && password === "user123") {
-      // User login
-      localStorage.setItem("user", JSON.stringify({ username, role: "user" }));
-      router.push("/workout");
     } else {
       alert("Credenciais inválidas");
     }
