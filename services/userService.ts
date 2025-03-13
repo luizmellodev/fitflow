@@ -1,35 +1,60 @@
-import { createClient } from "@/utils/supabase/client";
+import { User } from '@/models/user';
+import { createClient } from '@/utils/supabase/client';
 
-const supabase = createClient(); 
+export async function getUsers(): Promise<User[]> {
+  const { data, error } = await createClient()
+    .from('users')
+    .select('id, name')
 
-// UserService.ts
-export const fetchProfile = async (userId: string) => {
+    console.log('Fetched users:', data);
 
-  const { data: profile, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
+  if (error) {
+    console.error('Error fetching users:', error)
+    return []
+  }
+
+  return data
+}
+
+export async function createUser(name: string): Promise<User> {
+  const { data, error } = await createClient()
+    .from('users')
+    .insert({ name })
+    .select()
     .single();
 
   if (error) {
-    console.error(error.message);
-    return null;
-  }
-
-  return profile;
-};
-
-export const updateProfile = async (userId: string, updates: { name?: string, role?: string }) => {
-
-  const { data, error } = await supabase
-    .from("profiles")
-    .update(updates)
-    .eq("id", userId);
-
-  if (error) {
-    console.error(error.message);
-    return null;
+    console.error('Error creating user:', error);
+    throw error;
   }
 
   return data;
-};
+}
+
+export async function updateUser(id: string, name: string): Promise<User> {
+  const { data, error } = await createClient()
+    .from('users')
+    .update({ name })
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating user:', error);
+    throw error;
+  }
+
+  return data;
+}
+
+export async function deleteUser(id: string): Promise<void> {
+  const { error } = await createClient()
+    .from('users')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting user:', error);
+    throw error;
+  }
+}

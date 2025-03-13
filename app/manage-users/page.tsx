@@ -11,11 +11,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-
-type User = {
-  id: string;
-  name: string;
-};
+import {
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "@/services/userService";
+import { User } from "@/models/user";
 
 export default function ManageUsers() {
   const [users, setUsers] = useState<User[]>([]);
@@ -24,35 +26,48 @@ export default function ManageUsers() {
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   useEffect(() => {
-    // In a real application, you would fetch this data from an API
-    setUsers([
-      { id: "1", name: "John Doe" },
-      { id: "2", name: "Jane Smith" },
-      { id: "3", name: "Bob Johnson" },
-    ]);
+    fetchUsers();
   }, []);
 
-  const addUser = () => {
+  const fetchUsers = async () => {
+    const fetchedUsers = await getUsers();
+    setUsers(fetchedUsers);
+  };
+
+  const addUser = async () => {
     if (newUserName.trim() === "") return;
-    const newUser = {
-      id: Math.random().toString(36).substring(2, 9),
-      name: newUserName,
-    };
-    setUsers([...users, newUser]);
-    setNewUserName("");
-    setIsAddingUser(false);
+
+    try {
+      const newUser = await createUser(newUserName);
+      setUsers([...users, newUser]);
+      setNewUserName("");
+      setIsAddingUser(false);
+    } catch (error) {
+      console.error("Failed to add user:", error);
+    }
   };
 
-  const updateUser = () => {
+  const updateUserName = async () => {
     if (!editingUser || editingUser.name.trim() === "") return;
-    setUsers(
-      users.map((user) => (user.id === editingUser.id ? editingUser : user))
-    );
-    setEditingUser(null);
+
+    try {
+      await updateUser(editingUser.id, editingUser.name);
+      setUsers(
+        users.map((user) => (user.id === editingUser.id ? editingUser : user))
+      );
+      setEditingUser(null);
+    } catch (error) {
+      console.error("Failed to update user:", error);
+    }
   };
 
-  const deleteUser = (id: string) => {
-    setUsers(users.filter((user) => user.id !== id));
+  const deleteUserHandler = async (id: string) => {
+    try {
+      await deleteUser(id);
+      setUsers(users.filter((user) => user.id !== id));
+    } catch (error) {
+      console.error("Failed to delete user:", error);
+    }
   };
 
   return (
@@ -80,7 +95,7 @@ export default function ManageUsers() {
               <Button
                 variant="destructive"
                 size="sm"
-                onClick={() => deleteUser(user.id)}
+                onClick={() => deleteUserHandler(user.id)}
               >
                 Delete
               </Button>
@@ -88,6 +103,8 @@ export default function ManageUsers() {
           </div>
         ))}
       </div>
+
+      {/* Dialog for adding new user */}
       <Dialog open={isAddingUser} onOpenChange={setIsAddingUser}>
         <DialogContent>
           <DialogHeader>
@@ -107,6 +124,8 @@ export default function ManageUsers() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Dialog for editing user */}
       <Dialog
         open={editingUser !== null}
         onOpenChange={() => setEditingUser(null)}
@@ -129,7 +148,7 @@ export default function ManageUsers() {
                 placeholder="Enter user name"
               />
             </div>
-            <Button onClick={updateUser}>Update User</Button>
+            <Button onClick={updateUserName}>Update User</Button>
           </div>
         </DialogContent>
       </Dialog>

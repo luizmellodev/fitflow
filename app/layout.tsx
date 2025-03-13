@@ -7,9 +7,9 @@ import { Toaster } from "react-hot-toast";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Gym Management System",
-  description: "Manage your gym schedule, users, and workouts",
-  generator: "v0.dev",
+  title: "FitFlow",
+  description: "Gerencie sua academia de forma simples e eficiente.",
+  generator: "luizmellodev",
 };
 
 export default function RootLayout({

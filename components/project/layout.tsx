@@ -6,7 +6,7 @@ import { User } from "@supabase/supabase-js";
 import Header from "@/components/project/header";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Users, Dumbbell, Menu } from "lucide-react";
+import { Home, Users, Dumbbell, Menu, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -28,9 +28,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   const menuItems = [
-    { href: "/", label: "Início", icon: Home },
+    { href: "/admin", label: "Início", icon: Home },
     { href: "/manage-users", label: "Gerenciar Usuários", icon: Users },
-    { href: "/manage-workouts", label: "Gerenciar Exercícios", icon: Dumbbell },
+    { href: "/manage-workouts", label: "Gerenciar Treinos", icon: Calendar },
+    {
+      href: "/manage-exercises",
+      label: "Gerenciar Exercícios",
+      icon: Dumbbell,
+    },
   ];
 
   return (
