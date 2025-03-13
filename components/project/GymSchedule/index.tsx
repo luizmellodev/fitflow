@@ -1,0 +1,1 @@
+export { GymSchedule } from "./GymSchedule";
