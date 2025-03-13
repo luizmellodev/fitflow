@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Layout } from "@/components/project/layout";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,12 +51,26 @@ export default function ManageWorkouts() {
     fetchExercises();
   }, []);
 
+  const fetchUserWorkouts = useCallback(async () => {
+    if (selectedUser) {
+      const workouts = await getWorkoutsForUser(selectedUser.id);
+      setUserWorkouts(workouts);
+    }
+  }, [selectedUser]);
+
+  const fetchUserSchedules = useCallback(async () => {
+    if (selectedUser) {
+      const schedules = await getScheduleForUser(selectedUser.id);
+      setUserSchedules(schedules);
+    }
+  }, [selectedUser]);
+
   useEffect(() => {
     if (selectedUser) {
       fetchUserSchedules();
       fetchUserWorkouts();
     }
-  }, [selectedUser]);
+  }, [selectedUser, fetchUserSchedules, fetchUserWorkouts]);
 
   const fetchUsers = async () => {
     const fetchedUsers = await getUsers();
@@ -66,20 +80,6 @@ export default function ManageWorkouts() {
   const fetchExercises = async () => {
     const fetchedExercises = await getExercises();
     setExercises(fetchedExercises);
-  };
-
-  const fetchUserSchedules = async () => {
-    if (selectedUser) {
-      const schedules = await getScheduleForUser(selectedUser.id);
-      setUserSchedules(schedules);
-    }
-  };
-
-  const fetchUserWorkouts = async () => {
-    if (selectedUser) {
-      const workouts = await getWorkoutsForUser(selectedUser.id);
-      setUserWorkouts(workouts);
-    }
   };
 
   const handleCreateWorkout = async () => {

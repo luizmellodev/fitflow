@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
 import { signInAction } from "@/app/actions";
 import { FormMessage, Message } from "@/components/project/form-message";
 import { SubmitButton } from "@/components/project/submit-button";
@@ -11,9 +10,21 @@ import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
 export default function Login() {
-  const searchParams = useSearchParams();
-  const type = searchParams.get("error") ? "error" : searchParams.get("type");
-  const message = searchParams.get("error") || searchParams.get("message");
+  const [isClient, setIsClient] = useState(false);
+
+  // Só usa o `useSearchParams` no lado do cliente
+  const [searchParams, setSearchParams] = useState<URLSearchParams | null>(
+    null
+  );
+
+  useEffect(() => {
+    setIsClient(true); // Certifica-se de que estamos no lado do cliente
+    setSearchParams(new URLSearchParams(window.location.search)); // Obtém os parâmetros de URL
+  }, []);
+
+  // Lógica de mensagem e tipo de erro
+  const type = searchParams?.get("error") ? "error" : searchParams?.get("type");
+  const message = searchParams?.get("error") || searchParams?.get("message");
 
   useEffect(() => {
     if (message) {
@@ -30,6 +41,11 @@ export default function Login() {
     formMessage = type === "error" ? { error: message } : { message };
   } else {
     formMessage = { message: "" };
+  }
+
+  // Evita renderizar o componente até o cliente ser carregado
+  if (!isClient) {
+    return null;
   }
 
   return (

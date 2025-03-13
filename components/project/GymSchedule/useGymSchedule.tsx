@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getUsers } from "@/services/userService";
 import { User } from "@/models/user";
-import { Schedule } from "@/models/schedule";
 import {
   getScheduleForDate,
   addUserToSchedule,
@@ -33,16 +32,7 @@ export default function useGymSchedule() {
     fetchUsers();
   }, []);
 
-  useEffect(() => {
-    fetchSchedule();
-  }, [selectedDate]);
-
-  const fetchUsers = async () => {
-    const fetchedUsers = await getUsers();
-    setUsers(fetchedUsers);
-  };
-
-  const fetchSchedule = async () => {
+  const fetchSchedule = useCallback(async () => {
     console.log("Fetching schedule for date:", selectedDate);
 
     const fetchedSchedule = await getScheduleForDate(selectedDate);
@@ -64,6 +54,15 @@ export default function useGymSchedule() {
 
     console.log("Final processed schedule:", completeSchedule);
     setSchedule(completeSchedule);
+  }, [selectedDate]);
+
+  useEffect(() => {
+    fetchSchedule();
+  }, [selectedDate, fetchSchedule]);
+
+  const fetchUsers = async () => {
+    const fetchedUsers = await getUsers();
+    setUsers(fetchedUsers);
   };
 
   const handleAddUser = async (): Promise<string | null> => {

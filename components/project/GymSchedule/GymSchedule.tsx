@@ -9,7 +9,6 @@ import { ScheduleTimeSlots } from "./ScheduleTimeSlots";
 import { AddUserDialog } from "./TimeSlot/AddUserDialog";
 import { WorkoutDialog } from "./TimeSlot/WorkoutDialog";
 import useGymSchedule from "./useGymSchedule";
-import { Workout } from "@/models/workout";
 
 export function GymSchedule() {
   const {
@@ -85,9 +84,6 @@ export function GymSchedule() {
           onClose={() => setSelectedUserForWorkout(null)}
           user={selectedUserForWorkout}
           date={selectedDate}
-          onWorkoutUpdate={function (workout: Workout): void {
-            throw new Error("Function not implemented.");
-          }}
         />
       </div>
     </div>

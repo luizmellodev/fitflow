@@ -29,18 +29,18 @@ export function WorkoutDialog({
   const [currentWorkoutIndex, setCurrentWorkoutIndex] = useState(0);
 
   useEffect(() => {
+    const fetchWorkouts = async () => {
+      if (user) {
+        const fetchedWorkouts = await getWorkoutsForUser(user.id, date);
+        setWorkouts(fetchedWorkouts);
+        setCurrentWorkoutIndex(0);
+      }
+    };
+
     if (user) {
       fetchWorkouts();
     }
   }, [user, date]);
-
-  const fetchWorkouts = async () => {
-    if (user) {
-      const fetchedWorkouts = await getWorkoutsForUser(user.id, date);
-      setWorkouts(fetchedWorkouts);
-      setCurrentWorkoutIndex(0);
-    }
-  };
 
   const showPreviousWorkout = () => {
     setCurrentWorkoutIndex((prev) => Math.min(prev + 1, workouts.length - 1));
